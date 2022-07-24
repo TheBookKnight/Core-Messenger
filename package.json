@@ -23,6 +23,7 @@
   "homepage": "https://github.com/JoshuaTheEngineer/Core-Messenger#readme",
   "dependencies": {
     "@discordjs/rest": "^0.4.1",
+    "cron": "^2.1.0",
     "discord-api-types": "^0.32.1",
     "discord.js": "^13.6.0",
     "npm-run-all": "^4.1.5"
