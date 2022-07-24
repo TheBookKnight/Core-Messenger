@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  core-messenger:
+    image: cadav001/core-messenger:latest
+    container_name: core-messenger
+    restart: "on-failure"
+    ports:
+      - "8001:8001"
+    command: ["node", "."]
