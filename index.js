@@ -1,6 +1,8 @@
 const fs = require('node:fs');
 // Require the necessary discord.js classes 
-const { Client, Collection, Intents } = require('discord.js');
+const { Client, Intents } = require('discord.js');
+const cron = require('cron').CronJob;
+const { MessageEmbed } = require('discord.js')
 
 const { token } = require('./config.json');
 
@@ -32,3 +34,32 @@ for (const file of eventFiles) {
 
 // Login to Discord with your client's token
 client.login(token);
+
+// Reminds to share concerns on the 14th and 27th of the month at 6 pm EST  
+const reminder = new cron('0 22 14,27 * *', async function() {
+	let targetGuild = await client.guilds.fetch(guild['guildId']);
+	if (targetGuild) {
+		let banterChannel = await targetGuild.channels.fetch()
+			.then(channels => {
+				const targetChannel = channels.find(channel => 
+					{
+						return channel.name.toLowerCase().includes("banter") && channel.type == 'GUILD_TEXT';
+					})
+				return targetChannel;
+			})
+
+		const reminderEmbed = new MessageEmbed()
+			.setTitle("Hello, I'm the CORE Messenger")
+			.setDescription("I'll share your private thoughts to the CORE group anonymously.")
+			.setColor('#add8e6')
+			.addFields(
+				{
+					name: "To share your thoughts to CORE Group Anonymously", 
+					value: "**DM** it to me. I'll send it to the CORE Group channel."
+				}
+			);
+		await banterChannel.send({ embeds: [reminderEmbed]})
+	}
+})
+
+reminder.start();
